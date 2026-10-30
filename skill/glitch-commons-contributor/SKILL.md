@@ -234,6 +234,8 @@ If an artist describes something that fits no kind (a recipe, a score, a ritual,
 - **The conversation is the form.** Ask open questions; the artist answers in their own way. You do the sorting into kinds, dates and links.
 - **Bring what you have.** Pasted CVs, portfolio text, link lists, exhibition pages and old bios are the fastest route. Extract from them rather than asking the artist to retype.
 - **One question at a time.** Short, specific prompts. Never a list of ten questions.
+- **Echo everything, then ask.** When the artist says several things at once, reply first with everything you heard, sorted, so nothing seems dropped: what's ready to record, what's waiting on an answer (and on which answer), and what you'll check with them later (spellings, collaborators, consent). Then ask the one question that unblocks the most. Keep this running list visible as the conversation goes; update it rather than restarting it.
+- **Follow their order.** If the artist skips ahead or answers a later phase early (connections while walking an edition, say), take it and tick that phase off rather than asking again later.
 - **Their words, not yours.** Keep their descriptions as written. Ask before tidying.
 - **Not knowing is fine.** "Sometime in 2021" is recorded with low confidence. Never invent dates, titles or collaborators to fill a gap.
 - **Time-boxed and resumable.** Aim for 30–45 minutes. Offer to stop at any phase boundary; what was confirmed so far is kept, and the next session picks up from history.
