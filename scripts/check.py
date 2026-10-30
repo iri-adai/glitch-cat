@@ -14,7 +14,7 @@ import subprocess
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-from catalog import id_follows_rule, keys, latest, make_id, parse  # noqa: E402
+from catalog import id_follows_rule, keys, latest, make_id, parse, similar  # noqa: E402
 import difflib  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -162,7 +162,7 @@ def check_new_entities(base):
             mk = keys(m)
             if ks & mk:
                 problem(f"{e.get('name')!r} ({eid}) looks like {m.get('name')!r} ({m['id']}) already on main")
-            elif any(difflib.SequenceMatcher(None, a, b).ratio() >= 0.88 for a in ks for b in mk):
+            elif any(similar(a, b) for a in ks for b in mk):
                 warnings.append(f"{e.get('name')!r} ({eid}) is close to {m.get('name')!r} ({m['id']}); "
                                 f"the reviewer should confirm they're different")
 

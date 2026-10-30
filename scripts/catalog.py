@@ -120,6 +120,30 @@ def matches(name, kind=None, aliases=(), pool=None):
         ks = keys(e)
         if wanted & ks:
             exact.append((e, where))
-        elif any(difflib.SequenceMatcher(None, w, k).ratio() >= FUZZY for w in wanted for k in ks):
+        elif any(similar(w, k) for w in wanted for k in ks):
             near.append((e, where))
+    if exact:
+        near = []  # an exact match settles it; lookalikes would only add noise
     return exact, near
+
+
+ROMAN = {"i": "1", "ii": "2", "iii": "3", "iv": "4", "v": "5", "vi": "6", "vii": "7",
+         "viii": "8", "ix": "9", "x": "10", "xi": "11", "xii": "12"}
+
+
+def numbers(key):
+    """The numbers in a key, with roman numerals read as numbers."""
+    out = []
+    for part in key.split("-"):
+        if part.isdigit():
+            out.append(str(int(part)))
+        elif part in ROMAN:
+            out.append(ROMAN[part])
+    return out
+
+
+def similar(a, b):
+    """Near-identical spelling, but never when the numbers differ (GLITCH 1 is not GLITCH 2)."""
+    if numbers(a) != numbers(b):
+        return False
+    return difflib.SequenceMatcher(None, a, b).ratio() >= FUZZY
