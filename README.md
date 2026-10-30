@@ -4,6 +4,30 @@ An append-only catalog of what Glitch artists have made, started or shown at Gli
 
 Every line is a claim by the person named in `said_by`, recorded by the person named in `recorded_by`, with a source and a batch. Lines are never rewritten or deleted. Changes are recorded as new claims that supersede old ones, and duplicates are merged with SAME_AS.
 
+## How it works
+
+Think of the catalog as a drawing of dots and lines:
+
+- **entities**: the dots, one per thing (a person, a work, a residency, a tool)
+- **claims**: the lines between the dots, and who drew each one
+- **media**: pictures pinned to a dot, with a note on what Glitch may do with them
+
+1. **An artist talks** to Claude using the intake skill.
+2. **Claude turns it into dots and lines** and shows them back.
+3. **The artist approves**, and the lines go onto their branch here.
+4. **Glitch reviews and merges** the pull request, and the lines join the catalog on `main`.
+5. **Anything can read the catalog**: A(DAI), a website, a graph view, a design tool.
+
+Nothing is erased. A correction or a new detail is a new line on top; the newest line counts and the old ones stay as history.
+
+### Why this makes good data
+
+- Every line says who said it, from what source, and when.
+- Ids follow the same rule as A(DAI), so the same thing matches across both.
+- Nothing is overwritten, so the full history of who said what stays readable.
+- Plain text files: any program can read them, with no special database.
+- GitHub keeps every change dated and signed, as a public record anyone can copy.
+
 ## Files
 
 | File | Contents |
