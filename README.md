@@ -1,6 +1,6 @@
 # Glitch commons
 
-An append-only catalog of what Glitch artists have made and explored since 2020: artworks, protocols, tools, agents, writing, concepts and exhibitions, and the relations between them.
+An append-only catalog of what Glitch artists have made, started or shown at Glitch editions over the years: artworks, protocols, tools, agents, symbients, writing and concepts, and the relations between them.
 
 Every line is a claim by the person named in `said_by`, recorded by the person named in `recorded_by`, with a source and a batch. Lines are never rewritten or deleted. Changes are recorded as new claims that supersede old ones, and duplicates are merged with SAME_AS.
 
