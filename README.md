@@ -15,6 +15,7 @@ Every line is a claim by the person named in `said_by`, recorded by the person n
 | `private.jsonl` | Withheld quotes and sources (facts_only). Never shared or published. |
 | `agreements.jsonl` | Artist participation agreements, recorded by Glitch. |
 | `vocabulary.json` | The kinds and connections the check accepts. Change it together with this README. |
+| `scripts/find.py` | Looks for an entry in what's merged and in every open batch, and gives the id a new entry would get. |
 | `scripts/record.py` | Appends an approved package: entities first, then claims; withheld words go to `private.jsonl`. |
 | `scripts/check.py` | Validates the catalog and, on a pull request, that the batch only appends lines. |
 | `scripts/review.py` | Curator step before merging: marks a batch reviewed. |

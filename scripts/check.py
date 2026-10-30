@@ -13,10 +13,15 @@ import pathlib
 import subprocess
 import sys
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from catalog import id_follows_rule, keys, latest, make_id, parse  # noqa: E402
+import difflib  # noqa: E402
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 VOCAB = json.load(open(ROOT / "vocabulary.json", encoding="utf-8"))
 FILES = ["entities.jsonl", "claims.jsonl", "media.jsonl", "agreements.jsonl"]
 problems = []
+warnings = []
 
 
 def problem(msg):
@@ -58,6 +63,9 @@ def check_catalog():
         for f in ("name", "said_by", "recorded_by", "batch"):
             if not e.get(f):
                 problem(f"entity {eid!r}: missing {f}")
+        if kind and e.get("name") and not e.get("update") and not id_follows_rule(e):
+            problem(f"entity {eid!r}: id doesn't follow the naming rule for {e['name']!r} "
+                    f"(expected {make_id(kind, e['name'])}, optionally with -<year>)")
 
     for c in claims:
         if "claim" in c and "status" in c:  # a status line confirming or reviewing a claim
@@ -118,9 +126,36 @@ def check_branch(base):
                     continue
                 if row.get("batch"):
                     batches.add(row["batch"])
+    check_new_entities(base)
     if len(batches) > 1:
         problem(f"this branch adds more than one batch ({', '.join(sorted(batches))}); one batch per pull request")
     return batches
+
+
+def check_new_entities(base):
+    """Entities this branch adds must not recreate something already merged."""
+    old = git("show", f"{base}:entities.jsonl")
+    old_rows = parse(old.stdout) if old.returncode == 0 else []
+    new_text = (ROOT / "entities.jsonl").read_text(encoding="utf-8")
+    added = parse(new_text[len(old.stdout):]) if old.returncode == 0 and new_text.startswith(old.stdout) else []
+    merged = latest(old_rows)
+    for e in added:
+        eid = e.get("id", "")
+        if eid in merged:
+            if not (e.get("update") or e.get("also_proposed_in")):
+                problem(f"{eid} already exists on main; link to it instead of recreating it "
+                        f"(or mark the line as an update)")
+            continue
+        ks = keys(e)
+        for m in merged.values():
+            if m.get("type") != e.get("type"):
+                continue
+            mk = keys(m)
+            if ks & mk:
+                problem(f"{e.get('name')!r} ({eid}) looks like {m.get('name')!r} ({m['id']}) already on main")
+            elif any(difflib.SequenceMatcher(None, a, b).ratio() >= 0.88 for a in ks for b in mk):
+                warnings.append(f"{e.get('name')!r} ({eid}) is close to {m.get('name')!r} ({m['id']}); "
+                                f"the reviewer should confirm they're different")
 
 
 def main():
@@ -129,6 +164,8 @@ def main():
     args = ap.parse_args()
     entities, claims = check_catalog()
     batches = check_branch(args.base) if args.base else set()
+    for w in warnings:
+        print("warning:", w)
     if problems:
         print(f"{len(problems)} problem(s):")
         for p in problems:

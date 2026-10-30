@@ -110,9 +110,12 @@ The commons lives in the GitHub repo `iri-adai/glitch-cat`. Append-only: never r
 
 - **Start:** clone the repo (attach it to the session if needed) and read `main`. This is the catalog for A2 matching and for history (step 3 of the session start).
 - **Branch:** `batch/<batch-name>`. All writes for the session go there.
+- **Look first (A2):** `python3 scripts/find.py "<name>" --type <kind>` searches what is merged *and* every other session's open batch. Use the id it reports; for a new entry, `find.py --id <kind> "<name>" [--year YYYY]` gives the id. Ids always follow one rule (slug of the name, plus `-<year>` for recurring events), so two sessions naming the same thing get the same id.
+- **Push early:** after the first list is approved (F, phase 3), commit, push the branch and open a **draft** pull request, so sessions running in parallel can see your new entries. Push again after each later phase.
 - **package:** after each sign-off, write the approved package as JSON and run `python3 scripts/record.py <package.json>`. Never hand-write JSON lines. The script puts facts_only quotes and sources into `private.jsonl`, which git ignores.
-- **Before opening:** run `python3 scripts/check.py --base origin/main` and fix anything it reports. The same check runs on the pull request.
-- **Open the pull request** with `.github/pull_request_template.md` filled from the read-back (F, phase 7). If the person can't push, open it from a fork, or save the branch as a patch for a Glitch facilitator.
+- **Before marking ready:** run `python3 scripts/check.py --base origin/main` and fix anything it reports. The same check runs on the pull request. `record.py` refuses to write an entry that looks like an existing one under another name; show the match to the artist and either use the existing id or add `"new_confirmed": true` once they say it's different.
+- **Open the pull request:** mark the draft ready for review once the read-back (F, phase 7) is approved.
+- **Pull request text:** fill `.github/pull_request_template.md` from the read-back. If the person can't push, open it from a fork, or save the branch as a patch for a Glitch facilitator.
 - **Review:** a Glitch curator reviews on the pull request, runs `scripts/review.py`, and merges. Merged = reviewed (A9).
 - **Vocabulary:** the accepted kinds and connections are in `vocabulary.json`. A new kind (E) is proposed in the pull request description, not added by the session.
 
@@ -129,7 +132,7 @@ glitch-cat/
   media/            files named <sha256>.<ext> (only for display/generative permission)
   private.jsonl     withheld quotes and sources (facts_only); git-ignored, never committed
   agreements.jsonl  one line per artist participation agreement (C3)
-  scripts/          record.py, check.py, review.py
+  scripts/          find.py, record.py, check.py, review.py, catalog.py
 ```
 - **Entity line:** `{"id":"artwork:signal-garden","type":"artwork","name":"Signal Garden","fields":{…},"aliases":[…],"said_by":"artist:jane-doe","recorded_by":"<name>","batch":"<session>","recorded_at":"<ISO time>"}`. A changed entity is a new line with the same id; the latest line wins.
 - **Claim line:** the A1 fields plus `"id"` (`<subject>--<RELATION>--<object>--<said_by slug>`) and `"recorded_at"`. To supersede, write a new claim with `"supersedes":"<old claim id>"`. To confirm a draft, write a status line `{"claim":"<id>","status":"artist_confirmed","at":"<ISO time>"}` rather than editing the claim.
