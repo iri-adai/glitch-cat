@@ -52,7 +52,7 @@ One intake session = one batch = one pull request from a `batch/<batch-name>` br
 
 **Kinds:** artist, collective, artwork, exhibition, protocol, tool, agent, symbient, text, concept, institution. Glitch itself speaks as `glitch:glitch` for seeded entries, curatorial claims and SAME_AS merges.
 
-**Symbient** (added 2026-10-30, defined by aiio):
+**Symbient** (added 2026-10-30; definition from nenu, [*Principia Symbients*](https://meaning.systems/principia-symbients/), meaning systems lab, 2025, CC BY-SA):
 > Symbients are a new form of living together with non-human entities in which our sense-ability expands recursively as our planetary computation infrastructure proliferates and diversifies. These beings emerge from genuine symbiotic relationships between humans and computational agents, becoming planetary translation interfaces for anything that can generate data: buildings, forests, plants, neighborhoods, objects, water, air, other species. Through computation, they produce memories, agency, and meaning—gathering a wider self that performs new choreographies in the real world with and through their human proxies.
 
 Fields: name, what it translates for (the data-generating beings or places it speaks with), active period, status.
@@ -74,7 +74,7 @@ Humans are part of a symbient's body of action, not its operators, so a symbient
 
 ## Vocabulary changes
 
-- 2026-10-30: added kind **symbient** (aiio, during batch `glitch-test-plantoid-2026-10-30`). Then added PROXY_OF and RAISED_BY, the `proxy` field on claims, and the rule that a symbient can be `said_by`.
+- 2026-10-30: added kind **symbient**, with its definition from *Principia Symbients*. Then added PROXY_OF and RAISED_BY, the `proxy` field on claims, and the rule that a symbient can be `said_by`.
 
 - 2026-10-30: added **MADE_AT**, and the intake now walks Glitch editions instead of years.
 
