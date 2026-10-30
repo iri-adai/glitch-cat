@@ -81,3 +81,9 @@ Humans are part of a symbient's body of action, not its operators, so a symbient
 ## Waves
 
 - 2026-10-30: test session (facilitated), batch `glitch-test-plantoid-2026-10-30`.
+
+## Credits
+
+- **Intake skill:** adapted by aiio from the A(DAI) contributor protocol and its contributor skill, written by [sinkingsugar](https://github.com/sinkingsugar) for [A(DAI)](https://digitalartsinstitute.io). The core ideas (attributed claims, sources, consent levels, append-only history, the shared id rule, and lineage only in the artist's own words) come from there. This version adds the Glitch editions walk, the symbient kind and proxies, MADE_AT, seeding, and the GitHub pull-request flow. Built with Claude.
+- **Symbient definition:** nenu, [*Principia Symbients*](https://meaning.systems/principia-symbients/), meaning systems lab, 2025 (CC BY-SA).
+- **Seed data:** editions and works as listed on [glitchart.org](https://www.glitchart.org/0002/).
