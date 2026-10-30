@@ -1,15 +1,80 @@
 {
-  "kinds": ["artist", "collective", "artwork", "exhibition", "protocol", "tool", "agent", "symbient", "text", "concept", "institution", "glitch"],
-  "relations": [
-    "PROXY_OF", "RAISED_BY", "CREATED_BY", "COLLABORATED_ON", "EXHIBITED_AT", "PARTICIPATED_IN",
-    "PRESENTED_BY", "BUILT_WITH", "IMPLEMENTS", "VERSION_OF", "PRODUCED", "OPERATED_BY",
-    "WRITTEN_BY", "ABOUT", "EMBODIES", "EXPLORES", "BELONGS_TO", "SAME_AS",
-    "INFLUENCED_BY", "RESPONDS_TO", "SEED_OF", "INSPIRED_BY", "MADE_FOR"
+  "kinds": [
+    "artist",
+    "collective",
+    "artwork",
+    "exhibition",
+    "protocol",
+    "tool",
+    "agent",
+    "symbient",
+    "text",
+    "concept",
+    "institution",
+    "glitch"
   ],
-  "own_words_only": ["INFLUENCED_BY", "RESPONDS_TO", "SEED_OF", "INSPIRED_BY", "MADE_FOR"],
-  "reconciler_only": ["SAME_AS"],
+  "relations": [
+    "PROXY_OF",
+    "RAISED_BY",
+    "CREATED_BY",
+    "COLLABORATED_ON",
+    "EXHIBITED_AT",
+    "PARTICIPATED_IN",
+    "MADE_AT",
+    "PRESENTED_BY",
+    "BUILT_WITH",
+    "IMPLEMENTS",
+    "VERSION_OF",
+    "PRODUCED",
+    "OPERATED_BY",
+    "WRITTEN_BY",
+    "ABOUT",
+    "EMBODIES",
+    "EXPLORES",
+    "BELONGS_TO",
+    "SAME_AS",
+    "INFLUENCED_BY",
+    "RESPONDS_TO",
+    "SEED_OF",
+    "INSPIRED_BY",
+    "MADE_FOR"
+  ],
+  "own_words_only": [
+    "INFLUENCED_BY",
+    "RESPONDS_TO",
+    "SEED_OF",
+    "INSPIRED_BY",
+    "MADE_FOR"
+  ],
+  "reconciler_only": [
+    "SAME_AS"
+  ],
   "glitch_speaker": "glitch:glitch",
-  "consent": ["full", "facts_only", "anonymous"],
-  "status": ["draft", "artist_confirmed", "reviewed", "retracted"],
-  "confidence": ["low", "medium", "high"]
+  "consent": [
+    "full",
+    "facts_only",
+    "anonymous"
+  ],
+  "status": [
+    "draft",
+    "artist_confirmed",
+    "reviewed",
+    "retracted"
+  ],
+  "confidence": [
+    "low",
+    "medium",
+    "high"
+  ],
+  "object_kinds": {
+    "MADE_AT": [
+      "exhibition"
+    ],
+    "PARTICIPATED_IN": [
+      "exhibition"
+    ],
+    "PROXY_OF": [
+      "symbient"
+    ]
+  }
 }

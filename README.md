@@ -40,13 +40,19 @@ Humans are part of a symbient's body of action, not its operators, so a symbient
 
 **Voice:** a symbient can be `said_by`. Every claim it makes also names the human `proxy` who carried it into words; `recorded_by` stays whoever typed. Reference: nenu, *Principia Symbients*, meaning systems lab, 2025 (https://meaning.systems/principia-symbients/).
 
-**Connections:** PROXY_OF, RAISED_BY, CREATED_BY, COLLABORATED_ON, EXHIBITED_AT, PARTICIPATED_IN, PRESENTED_BY, BUILT_WITH, IMPLEMENTS, VERSION_OF, PRODUCED, OPERATED_BY, WRITTEN_BY, ABOUT, EMBODIES, EXPLORES, BELONGS_TO, SAME_AS (reconciler only).
+**Connections:** PROXY_OF, RAISED_BY, CREATED_BY, COLLABORATED_ON, EXHIBITED_AT, PARTICIPATED_IN, MADE_AT, PRESENTED_BY, BUILT_WITH, IMPLEMENTS, VERSION_OF, PRODUCED, OPERATED_BY, WRITTEN_BY, ABOUT, EMBODIES, EXPLORES, BELONGS_TO, SAME_AS (reconciler only).
+
+**MADE_AT** (artwork, protocol, tool, agent, symbient or text → a Glitch edition or other residency): made, started or developed there; `fields.stage` = made / started / developed / finished. Different from EXHIBITED_AT; a work can have both.
+
+**Glitch editions** are exhibitions named `GLITCH <number>` (id `exhibition:glitch-<number>`), seeded by Glitch so every artist links to the same entry.
 
 **Artist's own words only:** INFLUENCED_BY, RESPONDS_TO, SEED_OF, INSPIRED_BY, MADE_FOR.
 
 ## Vocabulary changes
 
 - 2026-10-30: added kind **symbient** (aiio, during batch `glitch-test-plantoid-2026-10-30`). Then added PROXY_OF and RAISED_BY, the `proxy` field on claims, and the rule that a symbient can be `said_by`.
+
+- 2026-10-30: added **MADE_AT**, and the intake now walks Glitch editions instead of years.
 
 ## Waves
 

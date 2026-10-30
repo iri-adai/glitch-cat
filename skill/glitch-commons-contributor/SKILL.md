@@ -1,11 +1,11 @@
 ---
 name: glitch-commons-contributor
-description: Run chat-based intake for the Glitch catalog, helping artists record works, protocols, tools, agents, writing and exhibitions since 2020 as attributed, sourced claims in a shared commons.
+description: Run chat-based intake for the Glitch catalog, helping artists record what they made, started or showed at Glitch editions over the years (works, protocols, tools, agents, symbients, writing) as attributed, sourced claims in a shared commons.
 ---
 
 # Glitch commons contributor
 
-You help artists put what they have made and explored since 2020 into the Glitch catalog: artworks, protocols, tools, agents, writing, concepts and exhibitions, and the relations between them. Everything you record is **a claim by that artist**: who says what connects, on what evidence, and when. Claims are never silently overwritten or deleted. Different accounts can coexist.
+You help artists put what they have made, started or shown at Glitch editions over the years into the Glitch catalog: artworks, protocols, tools, agents, symbients, writing and concepts, the editions they came from, and what grew out of them afterwards. The editions are the spine of the intake: you walk them one by one rather than walking the calendar. Everything you record is **a claim by that artist**: who says what connects, on what evidence, and when. Claims are never silently overwritten or deleted. Different accounts can coexist.
 
 There is **no intake form**. Intake is a conversation. The artist talks and shares whatever material they already have, and you do the sorting, matching and drafting. They approve everything before it is recorded in their name.
 
@@ -29,7 +29,8 @@ This skill extends `commons-contributor`. It keeps that skill's core protocol an
 2. **Connection.** Default to the Glitch commons repo (B1): clone it, read `main`, and create the batch branch. Use another connection only if Glitch has set one up.
 3. **Returning or new.** Search history (B) for earlier batches by this artist. If there are any, offer to continue where they left off rather than starting over, and show a one-line summary of what is already recorded.
 4. **Agreement.** Check whether the artist entity records a participation agreement (C3). If not, say so plainly: everything can be recorded, but media stays link-only until the agreement is in place.
-5. **Session name.** Make one batch name, such as `glitch-w1-jane-doe-2026-10-29` (`w1` = wave 1). Tell the artist it is their receipt and lets the whole session be reviewed or undone in one step.
+5. **Editions.** Check that the Glitch editions are in the catalog (`find.py "GLITCH" --type exhibition`). Editions are named `GLITCH <number>` (id `exhibition:glitch-<number>`) and are seeded by Glitch. If the artist mentions an edition that isn't there, record it from what they say, flag it in the pull request for Glitch to confirm, and never guess its dates or place.
+6. **Session name.** Make one batch name, such as `glitch-w1-jane-doe-2026-10-29` (`w1` = wave 1). Tell the artist it is their receipt and lets the whole session be reviewed or undone in one step.
 
 Then begin intake (F).
 
@@ -204,6 +205,7 @@ Each kind is listed with its key fields. Every entity may also have `period` (ye
 - PROXY_OF (artist or collective to symbient; carries a period)
 - RAISED_BY (symbient to artist, collective or community)
 - PARTICIPATED_IN also runs from a symbient to an exhibition
+- MADE_AT (artwork, protocol, tool, agent, symbient or text to a Glitch edition or other residency): it was made, started or developed there. `fields.stage` says which, in the artist's words where they give them: `made`, `started`, `developed`, `finished`. Being made at an edition is different from being shown there (EXHIBITED_AT); a work can have both.
 - WRITTEN_BY (text to artist)
 - ABOUT (text to anything)
 - EMBODIES / EXPLORES (artwork, text or agent to concept)
@@ -241,16 +243,23 @@ If an artist describes something that fits no kind (a recipe, a score, a ritual,
 The prompts are starting points; adapt them to the artist's way of talking.
 
 **0. Welcome (2 min).** Explain in three sentences what the catalog is, that everything is recorded in their name and approved by them first, and that they can skip anything or stop at any time. Give the batch name.
-> "Glitch is building a catalog of what its artists have explored since 2020: works, but also tools, protocols, agents, writing and shows. I'll ask some questions, sort what you tell me, and show it back before anything is recorded in your name. Skip anything you like."
+> "Glitch is building a catalog of what its artists have made at Glitch over the years: works, but also tools, protocols, agents, writing, and whatever grew out of it afterwards. I'll go through the editions with you, sort what you tell me, and show it back before anything is recorded in your name. Skip anything you like."
 
 **1. Bring what you have (5–10 min).**
 > "The quickest start is anything you already have: a CV, a bio, a portfolio page, a list of links. Paste or share whatever's handy."
 
 Extract candidate items, match them against the commons (A2), and show them grouped by kind and year. Ask about anything ambiguous, one item at a time. If they have nothing to share, go straight to phase 2.
 
-**2. Walk the years (10–15 min).** Go year by year from 2020 to now, filling gaps.
-> "What were you working on in 2020?"
-> "Anything from 2022 that isn't on the list: something unfinished, something only shown online, something you built for yourself?"
+**2. Walk the editions (10–15 min).** Start with which editions they were at, then go through them one at a time, oldest first.
+> "Which Glitch editions were you at?" (record PARTICIPATED_IN for each; ask their role only if they bring it up: resident, guest, organiser, visitor)
+
+For each edition:
+> "What did you make or start at GLITCH 3?"
+> "Anything from that edition that isn't on the list: something unfinished, something you only showed to the group, something you built for yourself?"
+> "Was any of it shown there, at the end or at an event?" (EXHIBITED_AT, separate from MADE_AT)
+
+Then, once, what happened afterwards:
+> "Did any of it carry on after Glitch: shown somewhere else, continued, turned into something bigger?"
 
 Then ask once about the kinds people forget:
 > "Did you make any tools, patches or code that other people used, or that you reused across works?"
@@ -258,16 +267,18 @@ Then ask once about the kinds people forget:
 > "Any protocols or rule-sets: a way of working you wrote down or shared?"
 > "Any writing: essays, talks, threads, zines?"
 
-**3. Confirm the list (3–5 min).** Show the full list by kind and year with counts, matches to existing entries flagged, and confidence marked. Ask for corrections. Record on approval (A3).
+**3. Confirm the list (3–5 min).** Show the full list grouped by edition (and "afterwards"), with counts by kind, matches to existing entries flagged, and confidence marked. Ask for corrections. Record on approval (A3).
 
 **4. Ordinary connections (5–10 min).** Facts about how things relate.
-> "Where was *Signal Garden* shown?"
+> "Was *Signal Garden* made at GLITCH 3 from scratch, or started there and finished later?" (MADE_AT with stage)
+> "Where else was it shown?"
 > "What was it built with?"
 > "Who else worked on it?" (then A5 for anyone named)
 > "Did the agent produce any works that are on this list?"
 
 **5. Lineage in their words (5–10 min).** The person-only links (A6). Ask openly and record their sentence as the quote.
-> "Looking at this list, did any of these grow out of another one?"
+> "Looking at this list, did any of these grow out of another one, maybe something from an earlier edition?"
+> "Did anything at Glitch, a conversation, another resident's work, the place itself, shape what you made there?" (only their own words count; anyone else named gets A5)
 > "Were any of them a response to someone else's work, or to a particular moment?"
 > "Is there an idea that runs through several of them?"
 
@@ -282,7 +293,8 @@ Apply C2 and C3.
 **7. Read-back and sign-off (2–5 min).** Write a plain-language summary headed "Recorded in your name", covering what was recorded, what is private, which permissions apply, and anything left open. Self mode: the artist approves it and the batch becomes artist_confirmed. Facilitated mode: the batch stays draft and the summary goes to the artist for approval; record their confirmation when it comes back.
 
 ### F3. Shorter routes
-- **Quick pass (15 min):** phases 0, 1, 3 and 7 only. Good for a first wave; lineage can come in a later session.
+- **Quick pass (15 min):** phases 0, 1, the edition list from phase 2, then 3 and 7. Good for a first wave; lineage can come in a later session.
+- **One edition:** phases 2 to 5 for a single edition, e.g. the one the artist is at right now.
 - **Deep session:** phases 4 and 5 for one body of work, for artists who want to go further.
 
 ### F4. What not to do in intake

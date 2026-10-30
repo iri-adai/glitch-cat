@@ -82,6 +82,9 @@ def check_catalog():
         for f in ("subject", "object", "said_by"):
             if c.get(f) not in ids:
                 problem(f"claim {cid}: {f} {c.get(f)!r} has no entry in entities.jsonl")
+        allowed_objects = VOCAB.get("object_kinds", {}).get(rel)
+        if allowed_objects and c.get("object", "").split(":", 1)[0] not in allowed_objects:
+            problem(f"claim {cid}: {rel} has to point at a {' or '.join(allowed_objects)}, not {c.get('object')!r}")
         if c.get("proxy") and c["proxy"] not in ids:
             problem(f"claim {cid}: proxy {c['proxy']!r} has no entry")
         if c.get("said_by", "").startswith("symbient:") and not c.get("proxy"):
