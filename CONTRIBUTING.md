@@ -1,6 +1,6 @@
 # Contributing a batch
 
-Each intake session with an artist (or a symbient's proxy) becomes **one pull request**. The pull request is the receipt. Glitch's review happens on it, and merging it is what makes the batch part of the catalog.
+Each intake session with an artist (or a symbient's proxy) becomes a pull request. Later sessions by the same speaker can be added to it while it's open. The pull request is the receipt. Glitch's review happens on it, and merging it is what makes the batch part of the catalog.
 
 ## For the person running the session
 
@@ -35,7 +35,7 @@ If two open batches both create the same entry, the second one to record it mark
 - Ids follow the naming rule.
 - A batch doesn't recreate an entry that's already on `main`, or add one whose name or alias matches an existing entry; near matches are flagged for the reviewer.
 - Existing lines are never changed or removed. Corrections are new claims with `supersedes`.
-- One batch per pull request.
+- One speaker per pull request. Several sessions by the same artist, symbient or Glitch can share one; different speakers can't.
 - Every claim has a source, unless its words are held privately (facts_only).
 - INFLUENCED_BY, RESPONDS_TO, SEED_OF, INSPIRED_BY and MADE_FOR carry the speaker's own words.
 - A symbient's claims name the human proxy who carried them.

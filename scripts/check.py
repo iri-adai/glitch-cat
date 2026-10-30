@@ -113,7 +113,7 @@ def check_catalog():
 
 def check_branch(base):
     """What this branch adds must be appended lines only, all from one batch."""
-    batches = set()
+    batches, speakers = set(), set()
     for name in FILES:
         old = git("show", f"{base}:{name}")
         old_text = old.stdout if old.returncode == 0 else ""
@@ -129,9 +129,12 @@ def check_branch(base):
                     continue
                 if row.get("batch"):
                     batches.add(row["batch"])
+                if row.get("said_by"):
+                    speakers.add(row["said_by"])
     check_new_entities(base)
-    if len(batches) > 1:
-        problem(f"this branch adds more than one batch ({', '.join(sorted(batches))}); one batch per pull request")
+    if len(speakers) > 1:
+        problem(f"this branch has more than one speaker ({', '.join(sorted(speakers))}); "
+                f"one speaker per pull request (several sessions by the same speaker are fine)")
     return batches
 
 
@@ -179,7 +182,7 @@ def main():
         sys.exit(1)
     msg = f"OK: {len(entities)} entities, {len(claims)} claim lines"
     if batches:
-        msg += f"; adds batch {next(iter(batches))}"
+        msg += f"; adds batch{'es' if len(batches) > 1 else ''} {', '.join(sorted(batches))}"
     print(msg)
 
 

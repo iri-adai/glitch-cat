@@ -107,7 +107,7 @@ A symbient can be the one speaking (`said_by`). Every claim it makes also names 
 Every connection offers the same six operations: **whoami**, **search**, **package**, **attach_media**, **supersede**, **history**.
 
 ### B1. Glitch commons repo (default)
-The commons lives in the GitHub repo `iri-adai/glitch-cat`. Append-only: never rewrite or delete a line. One session = one batch = one pull request.
+The commons lives in the GitHub repo `iri-adai/glitch-cat`. Append-only: never rewrite or delete a line. One session = one batch. A pull request holds one speaker's batches: a returning artist's new session can go on their open branch.
 
 - **Start:** clone the repo (attach it to the session if needed) and read `main`. This is the catalog for A2 matching and for history (step 3 of the session start).
 - **Branch:** `batch/<batch-name>`. All writes for the session go there.
