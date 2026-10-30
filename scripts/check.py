@@ -152,6 +152,9 @@ def check_new_entities(base):
         ks = keys(e)
         for m in merged.values():
             if m.get("type") != e.get("type"):
+                if ks & keys(m) and not e.get("new_confirmed"):
+                    warnings.append(f"{e.get('name')!r} ({eid}) shares a name with {m.get('name')!r}, "
+                                    f"recorded as a {m.get('type')} ({m['id']}); the reviewer should confirm")
                 continue
             mk = keys(m)
             if ks & mk:

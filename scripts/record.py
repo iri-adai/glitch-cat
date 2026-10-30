@@ -75,6 +75,11 @@ def main(path, fetch=True):
             else:
                 notes.append(f"{eid} already exists ({where}); linking to it")
             continue
+        if not e.get("new_confirmed"):
+            for x, w in matches(e["name"], None, e.get("aliases", []), pool)[0]:
+                if x.get("type") != kind:
+                    issues.append(f"{e['name']!r} has the same name as {x['name']!r}, recorded as a {x['type']} "
+                                  f"({x['id']}, {w}); if it's the same thing, use that id")
         if near and not e.get("new_confirmed"):
             for x, w in near:
                 issues.append(f"{e['name']!r} is close to {x['name']!r} ({x['id']}, {w}); "
