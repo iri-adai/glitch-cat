@@ -112,10 +112,11 @@ def matches(name, kind=None, aliases=(), pool=None):
     """Exact matches on any normalised key, then near matches of the same kind."""
     pool = known() if pool is None else pool
     wanted = {slug(name)} | {slug(a) for a in aliases}
-    exact, near = [], []
+    exact, near, seen = [], [], set()
     for e, where in pool:
-        if kind and e.get("type") != kind:
+        if (kind and e.get("type") != kind) or e["id"] in seen:
             continue
+        seen.add(e["id"])
         ks = keys(e)
         if wanted & ks:
             exact.append((e, where))
