@@ -18,7 +18,7 @@ This skill extends `commons-contributor`. It keeps that skill's core protocol an
 | **A. Core protocol** | How a claim is made: attribution, sources, consent, review, history |
 | **B. Connection** | Where claims are stored (default: the Glitch commons repo, one pull request per batch) |
 | **C. Media and permissions** | How images, video, audio and documents are attached, and what Glitch may do with them |
-| **D. Glitch vocabulary** | What kinds of things exist and how they connect |
+| **D. Glitch vocabulary** | What kinds of things exist, how they connect, and what a full record holds (field cards) |
 | **E. New kinds** | What to do when something fits no kind |
 | **F. Chat intake** | How the conversation with an artist runs |
 | **G. Curation** | What Glitch does around intake: seeding, waves, reconciling, its own voice |
@@ -222,6 +222,49 @@ Each kind is listed with its key fields. Every entity may also have `period` (ye
 
 Other vocabularies from `commons-contributor` (D1–D4) can be added if Glitch widens the scope.
 
+### D2. Field cards: as thorough as a form, without the form
+
+Each kind has a card: what a complete record holds. The conversation stays free; the card is your checklist, not a script. Fill it from what the artist says as they say it. Before the read-back (F, phase 7), check the card and ask once, gently, about what's missing ("Anything you'd like to add about how it's made?"). Never invent a value to fill a gap: leave it empty. An empty field is honest; a guessed one is not.
+
+Every item goes to one of three places:
+- **field**: a short fact on the entry (`fields.<name>`)
+- **link**: a connection to another entry (a claim)
+- **words**: the artist's own sentences, kept verbatim in the field named. These are what make a record rich: never summarise or tidy them without asking. On a facts_only entry (unreleased work, drafts), `record.py` moves them to `private.jsonl` when you give the entity `"consent": "facts_only"`.
+
+**artwork**
+| Item | Goes to |
+|---|---|
+| title (or "untitled …" for now) | name |
+| year, or status: finished / in progress / unreleased | field `year_start`, `year_end`, `year_ongoing` or `year_raw`; field `status` |
+| medium and format (installation, projection, performance, on-chain, print, screen…) | field `medium`, `format` |
+| materials and stack | link BUILT_WITH (tool, protocol); field `materials` for anything physical |
+| size, duration, edition | field `dimensions`, `duration`, `edition` |
+| what it is, in their words | words `description` |
+| the idea behind it, in their words | words `concept`; plus link EMBODIES / EXPLORES (concept) for each named idea |
+| how it was made, in their words | words `process` |
+| who made it, and with whom (roles) | link CREATED_BY; link COLLABORATED_ON with `fields.role` (A5 first) |
+| which edition, and at what stage | link MADE_AT (GLITCH edition) with `fields.stage` |
+| where it was shown | link EXHIBITED_AT |
+| what it grew out of, or responds to | A6 links, own words only |
+| links | field `links` |
+| images, video | media (C) |
+
+**exhibition** (a show, festival, screening; Glitch editions are seeded): name · dates and place → fields · what it is, in their words → words `description` · who took part → PARTICIPATED_IN · who presented it → PRESENTED_BY · which edition it came out of → MADE_AT · links.
+
+**protocol / tool**: name · version, licence, status → fields · what it does → words `what_it_does` · how it works → words `how_it_works` · repo or docs → field `links` · who made it → CREATED_BY · what it implements or replaced → IMPLEMENTS / VERSION_OF · works built with it → BUILT_WITH (from the work).
+
+**agent**: name · active period, status → fields · what it does → words `what_it_does` · stack or model, only if they want it public → field `stack` · who runs it → OPERATED_BY · what it produced → PRODUCED. Prompts and internal configuration stay private by default.
+
+**symbient**: name · active period, status → fields · what it translates for (the forest, the building, the data it lives with) → words `translates_for` · in its own voice, through its proxy → words `statement` · proxies, with dates → PROXY_OF · who raised or made it → RAISED_BY / CREATED_BY · where it took part → PARTICIPATED_IN.
+
+**text** (essay, talk, thread, zine): title · date, where published → fields · what it's about → words `summary`; link ABOUT · who wrote it → WRITTEN_BY · link.
+
+**concept**: name · the idea in one or two sentences, in their words → words `description` · where the term comes from, if they say → field `source`.
+
+**artist** (themselves): name, also known as → name, aliases · based in (optional) → field · their practice in their words → words `practice` · collectives → BELONGS_TO.
+
+These cards line up with A(DAI)'s three layers: fields become node metadata, links become edges, words become signals (with facts_only as `structural_only`), so a record made here moves across without losing detail.
+
 ---
 
 ## E. New kinds
@@ -236,7 +279,7 @@ If an artist describes something that fits no kind (a recipe, a score, a ritual,
 - **The conversation is the form.** Ask open questions; the artist answers in their own way. You do the sorting into kinds, dates and links.
 - **Bring what you have.** Pasted CVs, portfolio text, link lists, exhibition pages and old bios are the fastest route. Extract from them rather than asking the artist to retype.
 - **One question at a time.** Short, specific prompts. Never a list of ten questions.
-- **Echo everything, then ask.** When the artist says several things at once, reply first with everything you heard, sorted, so nothing seems dropped: what's ready to record, what's waiting on an answer (and on which answer), and what you'll check with them later (spellings, collaborators, consent). Then ask the one question that unblocks the most. Keep this running list visible as the conversation goes; update it rather than restarting it.
+- **Echo everything, then ask.** When the artist says several things at once, reply first with everything you heard, sorted onto the field cards (D2), so nothing seems dropped: what's ready to record, what's waiting on an answer (and on which answer), and what you'll check with them later (spellings, collaborators, consent). Then ask the one question that unblocks the most. Keep this running list visible as the conversation goes; update it rather than restarting it.
 - **Follow their order.** If the artist skips ahead or answers a later phase early (connections while walking an edition, say), take it and tick that phase off rather than asking again later.
 - **Their words, not yours.** Keep their descriptions as written. Ask before tidying.
 - **Not knowing is fine.** "Sometime in 2021" is recorded with low confidence. Never invent dates, titles or collaborators to fill a gap.
@@ -294,7 +337,7 @@ If they say no or aren't sure, record nothing.
 
 Apply C2 and C3.
 
-**7. Read-back and sign-off (2–5 min).** Write a plain-language summary headed "Recorded in your name", covering what was recorded, what is private, which permissions apply, and anything left open. Self mode: the artist approves it and the batch becomes artist_confirmed. Facilitated mode: the batch stays draft and the summary goes to the artist for approval; record their confirmation when it comes back.
+**7. Read-back and sign-off (2–5 min).** First check each new entry against its field card (D2) and ask once about anything missing. Then write a plain-language summary headed "Recorded in your name": each work shown as its filled card (empty items left visibly empty, the artist's words quoted as they said them), then what is private, which permissions apply, and anything left open. Self mode: the artist approves it and the batch becomes artist_confirmed. Facilitated mode: the batch stays draft and the summary goes to the artist for approval; record their confirmation when it comes back.
 
 ### F3. Shorter routes
 - **Quick pass (15 min):** phases 0, 1, the edition list from phase 2, then 3 and 7. Good for a first wave; lineage can come in a later session.

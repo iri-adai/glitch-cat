@@ -8,6 +8,7 @@ package.json:
   "common": {"said_by": "...", "proxy": null, "recorded_by": "...", "batch": "...",
              "source": "...", "status": "draft|artist_confirmed"},
   "entities": [{"type": "institution", "name": "...", "year": null, "aliases": [], "fields": {},
+                "consent": "full|facts_only",
                 "id": "optional, computed from type + name (+ year) if left out",
                 "update": false, "new_confirmed": false}],
   "claims":   [{"subject": "...", "relation": "...", "object": "...", "event_time": "...",
@@ -29,6 +30,11 @@ import sys
 
 from catalog import ROOT, id_follows_rule, known, make_id, matches
 
+# Fields that hold the speaker's own words (field cards, skill D2). On a facts_only entity
+# they go to private.jsonl; the public line keeps only the structural fields.
+WORD_FIELDS = {"description", "concept", "process", "statement", "notes", "what_it_does",
+               "how_it_works", "translates_for", "summary", "practice"}
+
 
 def stop(lines):
     print("Nothing recorded. Check these with the artist first:")
@@ -43,13 +49,20 @@ def main(path, fetch=True):
     now = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
     speaker = common["said_by"].split(":", 1)[1]
     pool = known(fetch=fetch)
-    issues, entities, notes = [], [], []
+    issues, entities, notes, private = [], [], [], []
 
     for e in pkg.get("entities", []):
         kind = e.get("type") or e["id"].split(":", 1)[0]
         eid = e.get("id") or make_id(kind, e["name"], e.get("year"))
-        line = {"id": eid, "type": kind, "name": e["name"], "fields": e.get("fields", {}),
-                "aliases": e.get("aliases", []), "said_by": common["said_by"],
+        fields = dict(e.get("fields", {}))
+        consent = e.get("consent", "full")
+        if consent == "facts_only":
+            held = {k: fields.pop(k) for k in list(fields) if k in WORD_FIELDS}
+            if held:
+                private.append({"entity": eid, "fields": held,
+                                "batch": common["batch"], "recorded_at": now})
+        line = {"id": eid, "type": kind, "name": e["name"], "fields": fields,
+                "aliases": e.get("aliases", []), "consent": consent, "said_by": common["said_by"],
                 "proxy": common.get("proxy"), "recorded_by": common["recorded_by"],
                 "batch": common["batch"], "recorded_at": now}
         if e.get("update"):
@@ -89,7 +102,7 @@ def main(path, fetch=True):
     if issues:
         stop(issues)
 
-    claims, private = [], []
+    claims = []
     for c in pkg.get("claims", []):
         cid = f'{c["subject"]}--{c["relation"]}--{c["object"]}--{speaker}'
         consent = c.get("consent", "full")

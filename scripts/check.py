@@ -15,6 +15,7 @@ import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from catalog import id_follows_rule, keys, latest, make_id, parse, similar  # noqa: E402
+from record import WORD_FIELDS  # noqa: E402
 import difflib  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -63,6 +64,11 @@ def check_catalog():
         for f in ("name", "said_by", "recorded_by", "batch"):
             if not e.get(f):
                 problem(f"entity {eid!r}: missing {f}")
+        if e.get("consent") == "facts_only":
+            leaked = sorted(set(e.get("fields", {})) & WORD_FIELDS)
+            if leaked:
+                problem(f"entity {eid!r}: facts_only but its words are public ({', '.join(leaked)}); "
+                        f"they belong in private.jsonl")
         if kind and e.get("name") and not e.get("update") and not id_follows_rule(e):
             problem(f"entity {eid!r}: id doesn't follow the naming rule for {e['name']!r} "
                     f"(expected {make_id(kind, e['name'])}, optionally with -<year>)")
